@@ -27,6 +27,7 @@ type MmCredentials struct {
 	Team   string
 	Pass   string
 	Server string
+	TFApin string
 }
 
 type MmCfg struct {

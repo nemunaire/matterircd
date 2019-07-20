@@ -57,7 +57,12 @@ func (u *User) getSlackToken() (string, error) {
 		return "", errors.New("SSO teams not yet supported")
 	}
 	resp, err = http.PostForm("https://slack.com/api/auth.signin",
-		url.Values{"team": {findTeamResponse.TeamID}, "email": {u.Credentials.Login}, "password": {u.Credentials.Pass}})
+		url.Values{
+			"team": {findTeamResponse.TeamID},
+			"email": {u.Credentials.Login},
+			"password": {u.Credentials.Pass},
+			"pin": {u.Credentials.TFApin},
+		})
 	if err != nil {
 		return "", err
 	}

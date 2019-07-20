@@ -43,8 +43,8 @@ func login(u *User, toUser *User, args []string, service string) {
 	if service == "slack" {
 		var err error
 		fmt.Println(len(args))
-		if len(args) != 1 && len(args) != 3 {
-			u.MsgUser(toUser, "need LOGIN <team> <login> <pass> or LOGIN <token>")
+		if len(args) != 1 && len(args) != 3 && len(args) != 4 {
+			u.MsgUser(toUser, "need LOGIN <team> <login> <pass> [2FA] or LOGIN <token>")
 			return
 		}
 		fmt.Println(len(args))
@@ -52,14 +52,17 @@ func login(u *User, toUser *User, args []string, service string) {
 			u.Token = args[len(args)-1]
 		}
 		if u.Token == "help" {
-			u.MsgUser(toUser, "need LOGIN <team> <login> <pass> or LOGIN <token>")
+			u.MsgUser(toUser, "need LOGIN <team> <login> <pass> [2FA] or LOGIN <token>")
 			return
 		}
-		if len(args) == 3 {
+		if len(args) == 3 || len(args) == 4 {
 			cred := &MmCredentials{}
 			cred.Team = args[0]
 			cred.Login = args[1]
 			cred.Pass = args[2]
+			if len(args) == 4 {
+				cred.TFApin = args[3]
+			}
 			u.Credentials = cred
 		}
 		if u.sc != nil {
